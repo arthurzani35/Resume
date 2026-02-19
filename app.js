@@ -1,31 +1,34 @@
-const tabs = document.querySelectorAll('.tab');
-const panels = document.querySelectorAll('.panel');
+const tabButtons = document.querySelectorAll('.tab');
+const tabPanels = document.querySelectorAll('.panel');
 
-const activateTab = (id) => {
-  tabs.forEach((tab) => {
-    const active = tab.dataset.tab === id;
-    tab.classList.toggle('active', active);
-    tab.setAttribute('aria-selected', String(active));
+function setActiveTab(targetId) {
+  tabButtons.forEach((button) => {
+    const isActive = button.dataset.tab === targetId;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-selected', String(isActive));
   });
 
-  panels.forEach((panel) => {
-    const active = panel.id === id;
-    panel.classList.toggle('active', active);
-    panel.hidden = !active;
+  tabPanels.forEach((panel) => {
+    const isActive = panel.id === targetId;
+    panel.classList.toggle('active', isActive);
+    panel.hidden = !isActive;
   });
-};
+}
 
-tabs.forEach((tab) => {
-  tab.addEventListener('click', () => {
-    const id = tab.dataset.tab;
-    activateTab(id);
-    window.location.hash = id;
+tabButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const targetId = button.dataset.tab;
+    setActiveTab(targetId);
+    window.location.hash = targetId;
   });
 });
 
-const initial = window.location.hash.replace('#', '');
-if (initial && document.getElementById(initial)) {
-  activateTab(initial);
+const initialHash = window.location.hash.replace('#', '');
+if (initialHash && document.getElementById(initialHash)) {
+  setActiveTab(initialHash);
 }
 
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearNode = document.getElementById('year');
+if (yearNode) {
+  yearNode.textContent = String(new Date().getFullYear());
+}
