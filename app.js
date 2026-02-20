@@ -9,23 +9,26 @@ function setActiveTab(targetId) {
   });
 
   tabPanels.forEach((panel) => {
+    if (!panel.id) return;
     const isActive = panel.id === targetId;
     panel.classList.toggle('active', isActive);
     panel.hidden = !isActive;
   });
 }
 
-tabButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const targetId = button.dataset.tab;
-    setActiveTab(targetId);
-    window.location.hash = targetId;
+if (tabButtons.length && tabPanels.length) {
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const targetId = button.dataset.tab;
+      setActiveTab(targetId);
+      window.location.hash = targetId;
+    });
   });
-});
 
-const initialHash = window.location.hash.replace('#', '');
-if (initialHash && document.getElementById(initialHash)) {
-  setActiveTab(initialHash);
+  const initialHash = window.location.hash.replace('#', '');
+  if (initialHash && document.getElementById(initialHash)) {
+    setActiveTab(initialHash);
+  }
 }
 
 const yearNode = document.getElementById('year');
